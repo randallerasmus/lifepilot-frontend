@@ -2,54 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/* LifePilot design system — deep navy/teal canvas with mint accent */
+
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+    /* Canvas */
+    --background: 200 60% 96%;
+    --foreground: 205 65% 11%;
 
+    /* Surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 205 65% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 205 65% 11%;
 
-    --primary: 222 80% 22%;
-    --primary-foreground: 210 40% 98%;
-    --primary-glow: 217 91% 45%;
+    /* Brand — deep teal/navy */
+    --primary: 200 70% 12%;
+    --primary-foreground: 160 70% 92%;
+    --primary-glow: 195 75% 22%;
 
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+    /* Mint accent (the green from the reference) */
+    --accent: 160 65% 45%;
+    --accent-foreground: 200 70% 10%;
+    --accent-soft: 160 60% 92%;
 
-    --muted: 210 40% 94%;
-    --muted-foreground: 215 16% 47%;
+    --secondary: 200 35% 93%;
+    --secondary-foreground: 200 70% 14%;
 
-    --accent: 217 91% 60%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 200 30% 94%;
+    --muted-foreground: 205 20% 42%;
 
     --destructive: 0 75% 50%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 142 71% 38%;
+    /* Status */
+    --success: 160 65% 38%;
     --success-foreground: 0 0% 100%;
-    --success-soft: 142 60% 94%;
+    --success-soft: 160 55% 92%;
 
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 47% 11%;
-    --warning-soft: 38 92% 95%;
+    --warning: 38 95% 52%;
+    --warning-foreground: 30 80% 15%;
+    --warning-soft: 42 95% 93%;
 
-    --danger: 0 75% 50%;
+    --danger: 0 72% 50%;
     --danger-foreground: 0 0% 100%;
-    --danger-soft: 0 80% 96%;
+    --danger-soft: 0 75% 95%;
 
-    --border: 214 32% 88%;
-    --input: 214 32% 88%;
-    --ring: 217 91% 45%;
+    --info: 198 85% 55%;
+    --info-foreground: 0 0% 100%;
+    --info-soft: 198 80% 94%;
 
-    --radius: 0.75rem;
+    --border: 200 28% 86%;
+    --input: 200 28% 86%;
+    --ring: 160 65% 40%;
 
-    --gradient-brand: linear-gradient(135deg, hsl(222 80% 22%), hsl(217 91% 45%));
-    --shadow-card: 0 1px 3px 0 hsl(222 47% 11% / 0.06), 0 1px 2px -1px hsl(222 47% 11% / 0.04);
-    --shadow-elevated: 0 10px 30px -12px hsl(222 47% 11% / 0.15);
+    --radius: 1rem;
+
+    /* Brand gradients & shadows */
+    --gradient-brand: linear-gradient(135deg, hsl(200 70% 10%) 0%, hsl(195 75% 18%) 55%, hsl(170 60% 22%) 100%);
+    --gradient-mint: linear-gradient(135deg, hsl(160 65% 45%), hsl(170 70% 38%));
+    --gradient-canvas: radial-gradient(1200px 600px at 0% 0%, hsl(200 70% 10% / 0.06), transparent 60%),
+                       radial-gradient(900px 500px at 100% 0%, hsl(160 65% 45% / 0.06), transparent 60%);
+
+    --shadow-card: 0 1px 2px hsl(205 65% 11% / 0.04), 0 4px 16px -8px hsl(205 65% 11% / 0.08);
+    --shadow-elevated: 0 10px 40px -12px hsl(200 70% 10% / 0.18);
+    --shadow-brand: 0 12px 32px -12px hsl(200 70% 10% / 0.35);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -62,25 +80,25 @@
   }
 
   .dark {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 217 91% 60%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 63% 40%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 217 91% 60%;
+    --background: 200 70% 7%;
+    --foreground: 160 30% 95%;
+    --card: 200 60% 10%;
+    --card-foreground: 160 30% 95%;
+    --popover: 200 60% 10%;
+    --popover-foreground: 160 30% 95%;
+    --primary: 160 65% 50%;
+    --primary-foreground: 200 70% 10%;
+    --secondary: 200 45% 14%;
+    --secondary-foreground: 160 30% 95%;
+    --muted: 200 45% 14%;
+    --muted-foreground: 200 15% 65%;
+    --accent: 160 65% 50%;
+    --accent-foreground: 200 70% 10%;
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 200 40% 18%;
+    --input: 200 40% 18%;
+    --ring: 160 65% 50%;
   }
 }
 
@@ -90,6 +108,8 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    background-image: var(--gradient-canvas);
+    background-attachment: fixed;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
