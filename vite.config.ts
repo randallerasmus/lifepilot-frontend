@@ -7,7 +7,9 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
-    port: 8080,
+    // 8080 is the LifePilot API. Dev serves on 8081, the origin the backend
+    // CORS config already allows; sharing 8080 meant whichever started first won.
+    port: 8081,
     hmr: {
       overlay: false,
     },
