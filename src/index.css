@@ -59,6 +59,16 @@
 
     --radius: 1rem;
 
+    /*
+     * Chart marks. The balance series is a darker step of the brand teal than
+     * --accent: a 2px line has to clear 3:1 against the card on its own, which
+     * the accent step does not. Each mode gets its own step rather than an
+     * automatic flip.
+     */
+    --chart-balance: 162 72% 29%;
+    --chart-grid: 200 28% 88%;
+    --chart-axis: 205 20% 42%;
+
     /* Brand gradients & shadows */
     --gradient-brand: linear-gradient(135deg, hsl(200 70% 10%) 0%, hsl(195 75% 18%) 55%, hsl(170 60% 22%) 100%);
     --gradient-mint: linear-gradient(135deg, hsl(160 65% 45%), hsl(170 70% 38%));
@@ -99,6 +109,10 @@
     --border: 200 40% 18%;
     --input: 200 40% 18%;
     --ring: 160 65% 50%;
+
+    --chart-balance: 162 65% 55%;
+    --chart-grid: 200 40% 20%;
+    --chart-axis: 200 15% 65%;
   }
 }
 

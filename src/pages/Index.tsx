@@ -1,8 +1,8 @@
 import { useState } from "react";
+import { AppHeader } from "@/components/lifepilot/AppHeader";
 import { ScenarioForm } from "@/components/lifepilot/ScenarioForm";
 import { ResultsPanel } from "@/components/lifepilot/ResultsPanel";
 import { simulateScenario, type ScenarioRequest, type ScenarioResponse } from "@/lib/lifepilot";
-import { Compass } from "lucide-react";
 
 const Index = () => {
   const [loading, setLoading] = useState(false);
@@ -31,24 +31,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border bg-[image:var(--gradient-brand)] text-primary-foreground">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="flex size-9 items-center justify-center rounded-xl bg-[image:var(--gradient-mint)] text-accent-foreground shadow-[var(--shadow-brand)]">
-              <Compass className="size-5" />
-            </div>
-            <div>
-              <h1 className="text-base font-semibold leading-tight">LifePilot</h1>
-              <p className="text-xs leading-tight text-primary-foreground/70">
-                Educational planning guidance
-              </p>
-            </div>
-          </div>
-          <span className="hidden rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3 py-1 text-xs font-medium text-primary-foreground sm:inline">
-            Life-event simulator
-          </span>
-        </div>
-      </header>
+      <AppHeader />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6">

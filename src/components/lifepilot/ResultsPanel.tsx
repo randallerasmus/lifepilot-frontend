@@ -130,7 +130,20 @@ export function ResultsPanel({ result, loading, error }: ResultsPanelProps) {
         <MetricCard
           label="Safe-to-spend drop"
           value={typeof dropPct === "number" ? `${dropPct.toFixed(1)}%` : "—"}
-          tone={dropPct >= 50 ? "danger" : dropPct >= 20 ? "warning" : "success"}
+          hint={
+            typeof dropPct === "number"
+              ? undefined
+              : "No positive safe-to-spend to measure against"
+          }
+          tone={
+            typeof dropPct !== "number"
+              ? "muted"
+              : dropPct >= 50
+                ? "danger"
+                : dropPct >= 20
+                  ? "warning"
+                  : "success"
+          }
         />
       </div>
 
