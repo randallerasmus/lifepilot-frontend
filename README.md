@@ -17,17 +17,23 @@
 
 LifePilot Frontend is the UI for the LifePilot scenario engine. It lets a user enter an Investec-backed account, monthly commitments, and a major life event, then see how that decision changes their monthly position.
 
-This is not a generic demo shell. It is the working interface for the backend scenario endpoint:
+This is not a generic demo shell. It is the working interface for two backend
+endpoints:
 
 ```text
-POST /api/lifepilot/scenarios
+POST /api/lifepilot/scenarios                        (Simulator)
+GET  /api/lifepilot/accounts/{accountId}/forecast    (Forecast)
 ```
 
-The current experience is focused on one job:
+The simulator asks what a decision would cost. The forecast asks where the
+balance is heading without one: it draws the projected daily balance, shades the
+cashflow risk windows, and lists the recurring payments driving them.
 
-- capture a realistic scenario quickly
-- send it to the backend
-- show affordability, risk, and projected monthly impact clearly
+**The project brief lives in the backend repo**, at `LIFEPILOT_CONTEXT.md` in
+`investec-life-pilot`. It covers both repositories, including which branches are
+in flight and the order they merge in. Read it before changing response shapes:
+this UI reads the backend DTOs by field name, and drift between the two renders
+blanks rather than failing.
 
 ## What You Can Do
 
@@ -36,21 +42,38 @@ The current experience is focused on one job:
   - private school fees
   - overseas holidays
   - home renovation
+  - a new home
+  - a new baby
+  - a career change
+  - caring for a parent
   - unpaid leave
   - a side business
   - custom events
 - enter recurring commitments and savings goals
 - submit real scenario payloads to the Spring Boot backend
 - review projected safe-to-spend impact and recommendations
+- project the daily balance forward and see the date it runs short
+- review detected subscriptions and debit orders with their next due dates
 
 ## Product Snapshot
 
-The frontend is built around a simple two-panel flow:
+Two routes, sharing a header.
+
+`/` — the simulator, a two-panel flow:
 
 1. Scenario form on the left for account, costs, and duration
 2. Results panel on the right for simulation output, risk, and guidance
 
+`/forecast` — the balance projection: headline risk date, KPI tiles, the daily
+balance chart with shaded risk windows, and tables of detected recurring
+payments and income.
+
 It is styled as a clean financial planning tool rather than a marketing page.
+
+The chart takes a darker step of the brand teal than `--accent`, which does not
+clear 3:1 against the card as a 2px line. Each theme gets its own step rather
+than an automatic flip. Risk bands are shaded, but never carry meaning by colour
+alone: every window is repeated as a labelled entry below the chart.
 
 ## Quick Start
 
@@ -69,8 +92,12 @@ npm run dev
 Default dev URL:
 
 ```text
-http://127.0.0.1:4173
+http://localhost:8081
 ```
+
+The backend owns `8080`, and `8081` is the origin its CORS config allows. Both
+defaulted to `8080` until September 2026, so whichever started first won and the
+other failed to bind.
 
 ### 3. Start the backend
 
