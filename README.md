@@ -143,7 +143,11 @@ VITE_LIFEPILOT_API_BASE=http://localhost:8080
 
 ## Important Note About Account IDs
 
-The form expects the backend-facing Investec `accountId`, not a friendly placeholder and not the visible account number.
+Both screens open with `demo-account` filled in. The backend serves generated
+transaction history for that id, so the app works without Investec credentials.
+Override the default with `VITE_LIFEPILOT_DEMO_ACCOUNT_ID`.
+
+For a real account, the form expects the backend-facing Investec `accountId`, not a friendly placeholder and not the visible account number.
 
 Do not use:
 

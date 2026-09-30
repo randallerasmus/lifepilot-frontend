@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  DEMO_ACCOUNT_ID,
   fetchForecast,
   formatDate,
   formatMoney,
@@ -31,7 +32,7 @@ const HORIZONS = [
 ];
 
 const Forecast = () => {
-  const [accountId, setAccountId] = useState("");
+  const [accountId, setAccountId] = useState(DEMO_ACCOUNT_ID);
   const [horizonDays, setHorizonDays] = useState("90");
   const [threshold, setThreshold] = useState("");
   const [loading, setLoading] = useState(false);
