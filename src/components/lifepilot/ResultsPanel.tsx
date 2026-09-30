@@ -1,7 +1,8 @@
-import { AlertCircle, Compass, Lightbulb, Loader2 } from "lucide-react";
+import { AlertCircle, Compass, LineChart, Lightbulb, Loader2 } from "lucide-react";
+import { ForecastChart } from "./ForecastChart";
 import { MetricCard } from "./MetricCard";
 import { StatusBadge } from "./StatusBadge";
-import { formatMoney, type ScenarioResponse } from "@/lib/lifepilot";
+import { formatDate, formatMoney, type ScenarioResponse } from "@/lib/lifepilot";
 
 interface ResultsPanelProps {
   result: ScenarioResponse | null;
@@ -15,7 +16,7 @@ export function ResultsPanel({ result, loading, error }: ResultsPanelProps) {
       <div className="flex min-h-[400px] flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 p-8 text-center">
         <Loader2 className="size-8 animate-spin text-primary" />
         <p className="mt-4 text-sm font-medium text-foreground">Running simulation…</p>
-        <p className="mt-1 text-xs text-muted-foreground">Calculating impact on your monthly position</p>
+        <p className="mt-1 text-xs text-muted-foreground">Projecting your balance with and without this decision</p>
       </div>
     );
   }
@@ -41,8 +42,8 @@ export function ResultsPanel({ result, loading, error }: ResultsPanelProps) {
         </div>
         <p className="mt-4 text-base font-semibold text-foreground">No simulation yet</p>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          Fill in the scenario form and run a simulation to see how a life event would affect your monthly
-          position.
+          Describe a life event and run a simulation to see the day your balance would run short, with and
+          without it.
         </p>
       </div>
     );
@@ -75,20 +76,55 @@ export function ResultsPanel({ result, loading, error }: ResultsPanelProps) {
         )}
       </div>
 
-      {/* Safe to spend comparison */}
+      {/* The curves the verdict is read from */}
+      {result.scenarioForecast?.timeline?.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)]">
+          <div className="mb-1 flex items-center gap-2">
+            <LineChart className="size-4 text-primary" />
+            <h3 className="text-sm font-semibold text-foreground">Projected balance</h3>
+          </div>
+          <p className="mb-4 text-xs text-muted-foreground">{result.summary}</p>
+          <ForecastChart
+            timeline={result.scenarioForecast.timeline}
+            risks={result.scenarioForecast.risks}
+            threshold={0}
+            lowestDate={result.lowestBalanceDate}
+            lowestBalance={result.projectedSafeToSpend}
+            currency={currency}
+            comparison={{
+              timeline: result.baselineForecast.timeline,
+              label: "Without this decision",
+              seriesLabel: "With this decision",
+            }}
+          />
+          {result.scenarioForecast.risks.length > 0 && (
+            <ul className="mt-4 space-y-1 text-xs text-muted-foreground">
+              {result.scenarioForecast.risks.map((risk) => (
+                <li key={`${risk.startDate}-${risk.endDate}`}>
+                  <span className="font-medium text-danger">Below zero</span> {formatDate(risk.startDate)} to{" "}
+                  {formatDate(risk.endDate)}, lowest {formatMoney(risk.lowestBalance, currency)}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {/* Safe to spend: the lowest point of each curve */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <MetricCard
-          label="Current safe to spend"
+          label="Safe to spend today"
           value={formatMoney(result.currentSafeToSpend, currency)}
-          hint={`Available balance ${formatMoney(result.availableBalance, currency)}`}
+          hint={`Lowest projected balance without this decision · balance ${formatMoney(result.availableBalance, currency)}`}
+          tone={result.alreadyShortWithoutScenario ? "danger" : "default"}
         />
         <MetricCard
-          label="Projected safe to spend"
+          label="With this decision"
           value={formatMoney(result.projectedSafeToSpend, currency)}
           hint={
             typeof dropPct === "number"
-              ? `${dropPct >= 0 ? "−" : "+"}${Math.abs(dropPct).toFixed(1)}% vs current`
-              : undefined
+              ? `${dropPct >= 0 ? "−" : "+"}${Math.abs(dropPct).toFixed(1)}% vs today`
+              : `Lowest point on ${formatDate(result.lowestBalanceDate)}`
           }
           tone={
             result.survivalStatus === "UNAFFORDABLE"
@@ -105,27 +141,35 @@ export function ResultsPanel({ result, loading, error }: ResultsPanelProps) {
         <MetricCard
           label="Monthly impact"
           value={formatMoney(result.monthlyImpact, currency)}
+          hint={result.durationMonths ? `for ${result.durationMonths} ${result.durationMonths === 1 ? "month" : "months"}` : undefined}
         />
         <MetricCard
           label="Once-off impact"
           value={formatMoney(result.onceOffImpact, currency)}
+          hint={result.onceOffImpact > 0 ? `on ${formatDate(result.startDate)}` : undefined}
         />
         <MetricCard
-          label="Monthly buffer"
-          value={formatMoney(result.monthlyBufferAfterScenario, currency)}
-          tone={result.monthlyBufferAfterScenario < 0 ? "danger" : "success"}
+          label="Buffer at lowest point"
+          value={formatMoney(result.bufferAtLowestPoint, currency)}
+          tone={result.bufferAtLowestPoint > 0 ? "success" : "muted"}
         />
         <MetricCard
-          label="Monthly shortfall"
-          value={formatMoney(result.monthlyShortfall, currency)}
-          tone={result.monthlyShortfall > 0 ? "danger" : "muted"}
+          label="Shortfall at lowest point"
+          value={formatMoney(result.shortfallAtLowestPoint, currency)}
+          tone={result.shortfallAtLowestPoint > 0 ? "danger" : "muted"}
         />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <MetricCard
-          label="Duration"
-          value={`${result.durationMonths} ${result.durationMonths === 1 ? "month" : "months"}`}
+          label="First day below zero"
+          value={result.firstShortfallDate ? formatDate(result.firstShortfallDate) : "Never"}
+          hint={
+            result.alreadyShortWithoutScenario
+              ? "The account already goes below zero without this decision"
+              : undefined
+          }
+          tone={result.firstShortfallDate ? "danger" : "success"}
         />
         <MetricCard
           label="Safe-to-spend drop"
