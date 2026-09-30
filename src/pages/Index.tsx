@@ -39,7 +39,7 @@ const Index = () => {
             Simulate a life event
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-            See how a major decision would affect your monthly position before you commit. Estimates are
+            See the day a major decision would leave your balance short, before you commit. Estimates are
             educational planning guidance only.
           </p>
         </div>

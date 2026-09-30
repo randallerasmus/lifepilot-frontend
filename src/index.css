@@ -66,6 +66,9 @@
      * automatic flip.
      */
     --chart-balance: 162 72% 29%;
+    /* The balance without a decision, drawn against --chart-balance. Blue so the
+       pair separates for colour-blind readers too (validated: CVD dE 18.8 light). */
+    --chart-baseline: 213 68% 50%;
     --chart-grid: 200 28% 88%;
     --chart-axis: 205 20% 42%;
 
@@ -111,6 +114,7 @@
     --ring: 160 65% 50%;
 
     --chart-balance: 162 65% 55%;
+    --chart-baseline: 213 77% 56%;
     --chart-grid: 200 40% 20%;
     --chart-axis: 200 15% 65%;
   }

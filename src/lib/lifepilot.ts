@@ -41,42 +41,55 @@ export const SCENARIO_OPTIONS: {
 
 export type RiskLevel = "HEALTHY" | "TIGHT" | "CRITICAL";
 
+/**
+ * Existing bills are not sent: the backend detects them from transaction
+ * history, and sending them as well would count them twice.
+ */
 export interface ScenarioRequest {
   accountId: string;
-  bondOrRent: number;
-  schoolFees: number;
-  insurance: number;
-  groceries: number;
-  fuel: number;
-  subscriptions: number;
-  otherBills: number;
-  goalSavingAmount: number;
   scenarioType: ScenarioType;
   scenarioName: string;
   monthlyCost: number;
   onceOffCost: number;
   durationMonths: number;
+  /** ISO date the decision takes effect. The backend defaults to the first of next month. */
+  startDate?: string;
 }
 
 export type SurvivalStatus = "AFFORDABLE" | "TIGHT" | "UNAFFORDABLE" | string;
 
+/**
+ * A life decision measured against the balance forecast. Safe-to-spend is the
+ * lowest projected balance: what could leave the account today without it ever
+ * going below zero over the forecast.
+ */
 export interface ScenarioResponse {
   accountId: string;
   scenarioType: ScenarioType;
   scenarioName: string;
   availableBalance: number;
+  /** Lowest projected balance without the decision. */
   currentSafeToSpend: number;
+  /** Lowest projected balance with the decision. */
   projectedSafeToSpend: number;
   monthlyImpact: number;
   onceOffImpact: number;
-  durationMonths: number;
+  durationMonths: number | null;
   currency: string;
   riskLevel: RiskLevel | string;
   survivalStatus: SurvivalStatus;
-  monthlyBufferAfterScenario: number;
-  monthlyShortfall: number;
+  /** Exactly one of these two carries a figure. */
+  bufferAtLowestPoint: number;
+  shortfallAtLowestPoint: number;
   /** Null when there is no positive safe-to-spend to measure the drop against. */
   safeToSpendDropPercent: number | null;
+  startDate: string;
+  lowestBalanceDate: string;
+  /** Null when the balance never goes below zero with the decision. */
+  firstShortfallDate: string | null;
+  alreadyShortWithoutScenario: boolean;
+  baselineForecast: ForecastResponse;
+  scenarioForecast: ForecastResponse;
   summary: string;
   survivalMessage: string;
   recommendations: string[];

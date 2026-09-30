@@ -15,7 +15,7 @@
 
 ## What This Is
 
-LifePilot Frontend is the UI for the LifePilot scenario engine. It lets a user enter an Investec-backed account, monthly commitments, and a major life event, then see how that decision changes their monthly position.
+LifePilot Frontend is the UI for the LifePilot scenario engine. It lets a user enter an Investec-backed account and a major life event, then see the balance forecast redrawn with that decision in it: the day it would run short, and by how much.
 
 This is not a generic demo shell. It is the working interface for two backend
 endpoints:
@@ -49,9 +49,9 @@ blanks rather than failing.
   - unpaid leave
   - a side business
   - custom events
-- enter recurring commitments and savings goals
+- rely on debit orders and salary detected from transactions, rather than typing bills in
 - submit real scenario payloads to the Spring Boot backend
-- review projected safe-to-spend impact and recommendations
+- compare the projected balance with and without the decision, and read the recommendations
 - project the daily balance forward and see the date it runs short
 - review detected subscriptions and debit orders with their next due dates
 
