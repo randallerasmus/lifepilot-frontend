@@ -12,6 +12,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Sparkles } from "lucide-react";
 import {
+  DEMO_ACCOUNT_ID,
   SCENARIO_OPTIONS,
   type ScenarioRequest,
   type ScenarioType,
@@ -45,7 +46,7 @@ type FormState = {
 } & Record<NumericField, string>;
 
 const initialState: FormState = {
-  accountId: "",
+  accountId: DEMO_ACCOUNT_ID,
   scenarioType: "SECOND_CAR",
   scenarioName: "Buy a second car",
   bondOrRent: "",
@@ -147,7 +148,7 @@ export function ScenarioForm({ onSubmit, loading }: ScenarioFormProps) {
             id="accountId"
             value={form.accountId}
             onChange={(e) => setForm((f) => ({ ...f, accountId: e.target.value }))}
-            placeholder="ACC-1029384"
+            placeholder="Investec account ID"
             aria-invalid={!!errors.accountId}
           />
           {errors.accountId && <p className="text-xs text-danger">{errors.accountId}</p>}

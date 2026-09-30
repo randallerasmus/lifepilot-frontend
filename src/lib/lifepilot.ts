@@ -2,6 +2,12 @@ export const API_BASE_URL =
   (import.meta.env.VITE_LIFEPILOT_API_BASE as string | undefined) ??
   "http://localhost:8080";
 
+// The backend serves generated history for this id without Investec credentials,
+// so the app shows something real before anyone has to find an account id.
+export const DEMO_ACCOUNT_ID =
+  (import.meta.env.VITE_LIFEPILOT_DEMO_ACCOUNT_ID as string | undefined) ??
+  "demo-account";
+
 export type ScenarioType =
   | "PRIVATE_SCHOOL"
   | "SECOND_CAR"
